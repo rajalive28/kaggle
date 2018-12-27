@@ -9,9 +9,9 @@ class TitanicTrainingService:
     def train(self):
         tf.set_random_seed(123)
         model = tf.keras.models.Sequential([
-            tf.keras.layers.Dense(6, activation=tf.nn.relu),
-            tf.keras.layers.Dense(3, activation=tf.nn.relu),
-            tf.keras.layers.Dense(2, activation=tf.nn.softmax)
+            tf.keras.layers.Dense(10, activation=tf.nn.relu),
+            tf.keras.layers.Dense(5, activation=tf.nn.relu),
+            tf.keras.layers.Dense(2, activation=tf.nn.sigmoid)
         ])
         model.compile(optimizer=tf.train.AdamOptimizer(0.001),
                       loss='sparse_categorical_crossentropy',
@@ -50,7 +50,7 @@ class TitanicTrainingService:
         # write to csv file
         pd_df = pd.DataFrame({'PassengerId': self.test_x['PassengerId'], 'Survived':res_df["label_2"]})
         print(pd_df.head())
-        #pd_df.to_csv("submission.csv",index=False)
+        pd_df.to_csv("submission.csv",index=False)
 
 
 if __name__ == "__main__":
