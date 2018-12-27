@@ -10,7 +10,8 @@ class TitanicTrainingService:
         tf.set_random_seed(123)
         model = tf.keras.models.Sequential([
             tf.keras.layers.Dense(6, activation=tf.nn.relu),
-            tf.keras.layers.Dense(3, activation=tf.nn.relu),
+            tf.keras.layers.Dense(6, activation=tf.nn.relu),
+            tf.keras.layers.Dense(4, activation=tf.nn.relu),
             tf.keras.layers.Dense(2, activation=tf.nn.softmax)
         ])
         model.compile(optimizer=tf.train.AdamOptimizer(0.001),
@@ -39,14 +40,17 @@ class TitanicTrainingService:
         self.preprocess(df_train, df_test)
         # Call the model
         res = self.train()
+        print(res)
         res_df=pd.DataFrame({
             "label_0":res[:,0],
             "label_1":res[:,1]
         })
         res_df["label_2"]=np.where(res_df["label_1"]>res_df["label_0"],1,0)
+
         # write to csv file
         pd_df = pd.DataFrame({'PassengerId': self.test_x['PassengerId'], 'Survived':res_df["label_2"]})
-        #pd_df.to_csv("submission.csv",index=False)
+        print(pd_df.head())
+        pd_df.to_csv("submission.csv",index=False)
 
 
 if __name__ == "__main__":
